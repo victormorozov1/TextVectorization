@@ -3,8 +3,9 @@ import numpy as np
 import requests
 from tenacity import retry, stop_after_attempt, wait_fixed, retry_if_exception_type
 
-from .constants import EMBEDDING_QUERY_MODEL_URI, EMBEDDING_URL, EMBEDDING_HEADERS
+from .constants import EMBEDDING_QUERY_MODEL_URI, EMBEDDING_URL, FOLDER_ID
 from .errors import TooManyRequests
+from .iam_token_getter import get_token_with_retries
 from .models import Phrase
 
 logger = logging.getLogger(__name__)
@@ -22,7 +23,15 @@ def get_embedding(text: str) -> np.array:
         'text': text,
     }
 
-    response = requests.post(EMBEDDING_URL, json=query_data, headers=EMBEDDING_HEADERS)
+    response = requests.post(
+        EMBEDDING_URL,
+        json=query_data,
+        headers={
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {get_token_with_retries()}',
+            'x-folder-id': f'{FOLDER_ID}',
+        },
+    )
 
     if response.status_code == 429:
         raise TooManyRequests
@@ -30,7 +39,7 @@ def get_embedding(text: str) -> np.array:
     response.raise_for_status()
 
     json_data = response.json()
-    logger.info(f'Received response with data {json_data}')
+    logger.debug(f'Received response with data {json_data}')
 
     return np.array(json_data['embedding'])
 

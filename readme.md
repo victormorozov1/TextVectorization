@@ -8,6 +8,7 @@ export DB_HOST=localhost
 export DB_PORT=2335
 export DJANGO_SECRET_KEY=some_secret_key
 export DJANGO_DEBUG=True
-export IAM_TOKEN=<to generate token: https://yandex.cloud/ru/docs/iam/operations/iam-token/create>
+export OAUTH_TOKEN=<to generate token: https://yandex.cloud/ru/docs/iam/operations/iam-token/create>
+python3 django_project/manage.py migrate
 python3 django_project/manage.py runserver
 ```

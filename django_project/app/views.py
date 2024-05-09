@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 @api_view(['GET'])
-def ask_question(request):
+def ask_question(request):  # TODO: oop style, auth
     # TODO validation
     question = request.data['question']
 
@@ -68,7 +68,7 @@ def ask_question(request):
 class UnknownQuestionSerializer(ModelSerializer):
     class Meta:
         model = UnknownQuestion
-        fields = ['question', 'user_select_topic']
+        fields = ['question', 'select_topic']
 
 
 class UnknownQuestionViewSet(ModelViewSet):

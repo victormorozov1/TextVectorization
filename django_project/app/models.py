@@ -29,5 +29,8 @@ class Phrase(Model):
 
 class UnknownQuestion(Model):
     question = TextField(Phrase)
-    user_select_topic = ForeignKey(Topic, on_delete=PROTECT)
+    select_topic = ForeignKey(Topic, on_delete=PROTECT, null=True, blank=True)
     resolved = BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return self.question

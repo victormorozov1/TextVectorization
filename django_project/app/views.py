@@ -52,7 +52,7 @@ def ask_question(request):
                 'possible_answers': [
                     {
                         'question_id': question.id,
-                        'question': question.content,
+                        'topic': question.topic.name,
                         'answer': question.topic.answer,
                     }
                     for question in top3_questions

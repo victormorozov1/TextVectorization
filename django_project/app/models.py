@@ -4,9 +4,10 @@ from django.db.models import AutoField, CharField, ForeignKey, IntegerField, JSO
 
 class Topic(Model):
     answer = TextField(max_length=3000)
+    name = CharField(max_length=30, null=True)  # TODO: null=False
 
     def __str__(self) -> str:
-        return f'{self.answer[:120]}' + ('...' if len(self.answer) > 120 else '')
+        return self.name or ''
 
 
 class Phrase(Model):

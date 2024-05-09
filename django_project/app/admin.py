@@ -13,6 +13,11 @@ class TopicAdmin(admin.ModelAdmin):
     list_display_links = list_display
 
 
+class UnknownQuestionAdmin(admin.ModelAdmin):
+    list_display = ('user_select_topic', 'question')
+    list_display_links = list_display
+
+
 admin.site.register(Phrase, PhraseAdmin)
 admin.site.register(Topic, TopicAdmin)
-admin.site.register(UnknownQuestion)
+admin.site.register(UnknownQuestion, UnknownQuestionAdmin)

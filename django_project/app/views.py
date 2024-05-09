@@ -1,12 +1,16 @@
 import logging
 import numpy as np
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.serializers import ModelSerializer
+from rest_framework.viewsets import ModelViewSet
 from scipy.spatial.distance import cdist
 
 from .constants import EMBEDDING_FOUND_ANSWER_LEVEL
 from .embedding import get_embedding, get_or_load_phrase_embedding
-from .models import Phrase
+from .models import Phrase, UnknownQuestion
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +55,7 @@ def ask_question(request):
                 'found_answer': False,
                 'possible_answers': [
                     {
-                        'question_id': question.id,
+                        'topic_id': question.topic.id,
                         'topic': question.topic.name,
                         'answer': question.topic.answer,
                     }
@@ -61,3 +65,14 @@ def ask_question(request):
         )
 
 
+class UnknownQuestionSerializer(ModelSerializer):
+    class Meta:
+        model = UnknownQuestion
+        fields = ['question', 'user_select_topic']
+
+
+class UnknownQuestionViewSet(ModelViewSet):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    queryset = UnknownQuestion.objects.all()
+    serializer_class = UnknownQuestionSerializer

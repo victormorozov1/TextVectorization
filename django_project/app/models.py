@@ -1,5 +1,13 @@
 from .constants import PHRASE_MAX_LENGTH
-from django.db.models import AutoField, CharField, ForeignKey, IntegerField, JSONField, Model, PROTECT, TextField
+from django.db.models import (
+    BooleanField,
+    CharField,
+    ForeignKey,
+    JSONField,
+    Model,
+    PROTECT,
+    TextField,
+)
 
 
 class Topic(Model):
@@ -20,5 +28,6 @@ class Phrase(Model):
 
 
 class UnknownQuestion(Model):
-    question = ForeignKey(Phrase, on_delete=PROTECT)
-    user_select_answer = ForeignKey(Topic, on_delete=PROTECT)
+    question = TextField(Phrase)
+    user_select_topic = ForeignKey(Topic, on_delete=PROTECT)
+    resolved = BooleanField(default=False)

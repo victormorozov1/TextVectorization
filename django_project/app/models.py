@@ -15,7 +15,7 @@ class Topic(Model):
     name = CharField(max_length=30, null=True)  # TODO: null=False
 
     def __str__(self) -> str:
-        return self.name or ''
+        return (self.name or '') + '\t\t' + self.answer[:20]
 
 
 class Phrase(Model):

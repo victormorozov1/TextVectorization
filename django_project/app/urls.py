@@ -11,5 +11,4 @@ router.register(r'uk', UnknownQuestionViewSet)
 urlpatterns = [
     path('ask_question', ask_question),
     path('', include(router.urls))
-    # path('kaka', UnknownQuestionViewSet.as_view)
 ]

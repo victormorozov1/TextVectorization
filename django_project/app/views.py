@@ -41,11 +41,11 @@ def ask_question(request):  # TODO: oop style, auth
     else:
         sim.resize(sim.shape[1])
         top3_questions = []
-        used_topics = []
+        used_topics: list[str] = []
         for i in np.argpartition(sim, -len(sim)):
             question = phrases[i]
-            if question.topic_id not in used_topics:
-                used_topics.append(question.topic_id)
+            if question.topic.name not in used_topics:
+                used_topics.append(question.topic.name)
                 top3_questions.append(question)
             if len(top3_questions) == 3:
                 break
